@@ -31,6 +31,27 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 
 def score(dice)
   # You need to write this method
+  # 111 = 1000, XXX = 100 * X, 1 = 100, 5 = 50, 0
+  score = 0
+  totals = [0] * 7 # array represents die faces from 1 to 6 [0, 0, 0, 0, 0, 0, 0]. It is 7 since there is no die with face 0 but array starts with 0
+
+  dice.map {|i| totals[i]+=1} # map every element in dice array into i. Increment value for matching dice value
+
+  for i in (1..6)
+    if totals[i] >= 3
+      if i == 1
+        score += 1000
+      else
+        score += 100*i
+      end
+      totals[i] -= 3 # minus 3 to determine if there is any extra
+    end
+  end
+
+  # calculate the remaining
+  score += (totals[1]*100+totals[5]*50)
+
+  return score
 end
 
 class AboutScoringProject < Neo::Koan
